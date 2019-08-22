@@ -58,7 +58,9 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('smartie'=>'smarty','database','email','Accessories_lib'
+    ,'form_validation','session','Address','Route_lib','Schedule_lib','Member_lib'
+    ,'PassengerOnBoard','Booking_lib','BookingAccessory','Customer_lib');
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +91,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array();
+$autoload['helper'] = array('form','url','cookie','smiley');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +134,7 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array();
+$autoload['model'] = array('Route_model','City_model','Address_model',
+    'RouteAddress_model','Accessories_model','Currency_model','Booking_model'
+    ,'Countries_model');
+
