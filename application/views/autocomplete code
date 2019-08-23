@@ -1,0 +1,151 @@
+
+  $.ajax({
+                url: site_url + "/booking/search",
+                type: "POST",
+                dataType: 'json', // add json datatype to get json
+                success: function (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        // console.log(array[i].address);
+                        var obj = {"id": array[i].address_id.toString(), "address": array[i].address.toString(), "ignore": false};
+
+                        dataSet.push(obj);
+                    }
+                    console.log(dataSet);
+                },
+                error: function (request, status, error) {
+                    alert(status);
+                }
+            });
+           
+            /* 
+             * 
+             * 
+             $('#from-address').autocomplete({
+             nameProperty: 'address',
+             valueField: '#hidden-field1',
+             dataSource: dataSet
+             });
+             $('#to-address').autocomplete({
+             nameProperty: 'address',
+             valueField: '#hidden-field2',
+             dataSource: dataSet
+             });
+              const myData = [{
+                    "id": 1,
+                    "address": 'Ercan',
+                    "ignore": false
+                }, {
+                    "id": 2,
+                    "address": 'Item 2',
+                    "ignore": false
+                }, {
+                    "id": 3,
+                    "address": 'Item 3',
+                    "ignore": false
+                }
+            ];
+             *
+             *
+             */
+  function calculateTotal() {
+                //alert(total);
+                adult = parseInt($("#adult").val());
+                kids = parseInt($("#kids").val());
+                baby = parseInt($("#baby").val());
+                babyAccessory = parseInt($("#baby_accessory").val());
+
+                //alert(typeof (adult) + typeof (kids) + typeof (baby));
+                //alert(!isNaN(adult));
+                if (!isNaN(adult) && !isNaN(kids) && !isNaN(baby) && !isNaN(babyAccessory)) {
+                    total = adult * adultFees + kids * adultFees + baby * adultFees + babyAccessory * adultFees;
+                    // alert(total);
+                    $("#totalFees").val(total.toString());
+                }
+            }
+
+            $("#adult").change(function () {
+                adult = parseInt($("#adult").val());
+                //alert(typeof($("#adult").val()));
+                //$("#adult_value").text(adult);
+                calculateTotal();
+            });
+            $("#kids").change(function () {
+                calculateTotal();
+            });
+            $("#baby").change(function () {
+                calculateTotal();
+            });
+            $("#baby_accessory").change(function () {
+                calculateTotal();
+            });
+$('.alert').alert();
+            $(".checkbox").change(function () {
+                $(".checkbox").each(function (i) {
+                    if (this.checked) {
+                        //alert(" Checked");
+                        getAccssoryPlus($(this).val());
+                    }
+                    if (!this.checked) {
+                        //alert("Un Checked");
+                        getAccssoryMinus($(this).val());
+                    }
+
+                });
+
+            });
+
+        });
+        function adder(x) {
+            return function (y) {
+                return x + y;
+            }
+        }
+        function sub(x) {
+            return function (y) {
+                return x - y;
+            }
+        }
+
+        function getAccssoryPlus(accessory_id) {
+            //alert("Accssory Plus");
+
+            $.ajax({
+                url: site_url + "/booking/viewAccessorisById/" + accessory_id,
+                dataType: "JSON",
+                type: "POST",
+                success: function (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        if (accessory_fees === 0) {
+                            accessory_fees = adder(parseInt(array[i].fees));
+                        } else {
+                            accessory_fees = accessory_fees(parseInt(array[i].fees));
+                        }
+
+                        $("#accessory_total").val(accessory_fees);
+                        $("#accessory_iso").val(array[i].iso);
+                    }
+                },
+                error: function (requst, status, error) {
+                    alert(requst.responseText + error);
+                }
+            });
+        }
+        function getAccssoryMinus(accessory_id) {
+            //alert("Accssory Plus");
+            var count = counter(1);
+            $.ajax({
+                url: site_url + "/booking/viewAccessorisById/" + accessory_id,
+                dataType: "JSON",
+                type: "POST",
+                success: function (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        accessory_fees = sub(parseInt(array[i].fees));
+                        $("#accessory_total").val(accessory_fees);
+                        $("#accessory_iso").val(array[i].iso);
+                    }
+                },
+                error: function (requst, status, error) {
+                    alert(requst.responseText + error);
+                }
+            });
+        }

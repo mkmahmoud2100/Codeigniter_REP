@@ -1,0 +1,21 @@
+{foreach from=$route item=row}
+                    <tr>
+                        <td><label >Total: {$row->fees} {$row->iso}<input type="hidden" id="totalFees" readonly="readonly"/> </label></td>
+                        <td>
+                            <select name="currencies" class="form-control">
+                                <option value="0">---</option>
+                                {foreach from=$currencies item=curr}
+
+                                    <option value="{$curr.iso}"> {$curr.symbol} &nbsp;{$curr.name}</option>
+
+
+                                {/foreach}
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label >Comments: {$row->comments}</label></td>
+                        <td><label>Estimated Time:{$row->estimated_time}</label></td>
+                    </tr>
+                {/foreach}
